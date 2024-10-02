@@ -24,7 +24,7 @@ def plot_optimize_sinusoidal_waveform_spsa():
     parser.add_argument('--K', type=int, default=16)
     parser.add_argument('--epsilon', type=float, default=0.1)
     parser.add_argument('--max_iter', type=int, default=50)
-    parser.add_argument('--quiet', type=BooleanOptionalAction, default=False)
+    parser.add_argument('--quiet', action=BooleanOptionalAction, default=False)
 
     cmd_args = parser.parse_args()
 
