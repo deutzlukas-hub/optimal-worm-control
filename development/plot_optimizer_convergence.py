@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 # From my projects
 from worm_experiments.util import load_sweep
-from optimal_worm_control.util import linear_norm
+from optimal_worm_control.util import LinearNorm
 # From waveform-optimizer
 from optimal_worm_control.waveform_optimizer import WaveformOptimizer
 from optimal_worm_control.dirs import test_data_dir, development_dir
@@ -24,7 +24,7 @@ def plot_optimize_sinusoidal_waveform_spsa():
     parser.add_argument('--K', type=int, default=16)
     parser.add_argument('--epsilon', type=float, default=0.1)
     parser.add_argument('--max_iter', type=int, default=50)
-    parser.add_argument('--quiet', action=BooleanOptionalAction, default=False)
+    parser.add_argument('--quiet', action=BooleanOptionalAction, default=True)
 
     cmd_args = parser.parse_args()
 
@@ -41,7 +41,7 @@ def plot_optimize_sinusoidal_waveform_spsa():
 
     WFO = WaveformOptimizer(args, quiet=cmd_args.quiet)
     WFO.set_objective('speed')
-    WFO.set_normalizer(linear_norm(0.0, 0.2))
+    WFO.set_normalizer(LinearNorm(0.0, 0.2))
     p0 = [1.0, 1.0]
     history = WFO.optimize_waveform_parameter_spsa(waveform, p0, cmd_args.epsilon, cmd_args.K, max_iter=cmd_args.max_iter)
     p_arr_history = np.array([tup[0] for tup in history])

@@ -1,4 +1,5 @@
 # From built-in
+from multiprocessing import Pool
 from typing import List, Optional, Callable
 from os import cpu_count
 import logging
@@ -137,21 +138,35 @@ class WaveformOptimizer():
         if workers is None:
             workers = K if cpu_count() >= K else cpu_count()
 
-        # Run the perturbations in parallel
-        with ThreadPoolExecutor(max_workers=workers) as executor:
-            futures = []
+        # # Run the perturbations in parallel
+        # with ThreadPoolExecutor(max_workers=workers) as executor:
+        #     futures = []
+        #
+        #     for _ in range(K):
+        #         # Generate random perturbation vector (e.g., uniform between -1 and 1)
+        #         perturbation = np.random.uniform(-1, 1, size=params.shape)
+        #         # Submit the SPSA perturbation task to the executor for parallel computation
+        #         futures.append(executor.submit(self._spsa_perturbation, params, epsilon, perturbation))
 
+            # Create a pool of workers
+        with Pool(processes=workers) as pool:
+            futures = []
             for _ in range(K):
                 # Generate random perturbation vector (e.g., uniform between -1 and 1)
                 perturbation = np.random.uniform(-1, 1, size=params.shape)
-                # Submit the SPSA perturbation task to the executor for parallel computation
-                futures.append(executor.submit(self._spsa_perturbation, params, epsilon, perturbation))
+                # Submit the SPSA perturbation task to the pool for parallel computation
+                futures.append(pool.apply_async(self._spsa_perturbation, (params, epsilon, perturbation)))
 
             # Collect the results from the parallel computations
-            for future in as_completed(futures):
-                f_pos, f_neg, perturbation = future.result()
+            #for future in as_completed(futures):
+            for future in futures:
+                f_pos, f_neg, perturbation = future.get()
+                #f_pos, f_neg, perturbation = future.result()
                 # Update the gradient estimate for this perturbation
                 gradient_estimate += (f_pos - f_neg) / (2 * epsilon * perturbation)
+
+
+
 
         # Average the gradient estimates over K perturbations
         gradient_estimate /= K

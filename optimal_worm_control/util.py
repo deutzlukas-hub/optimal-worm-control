@@ -28,7 +28,11 @@ def parameters_from_args(args: list = []):
 
     return params
 
-def linear_norm(min: float, max: float):
-    def norm(obj_value: float):
-        return (obj_value - min) / (max - min)
-    return norm
+class LinearNorm:
+    def __init__(self, min_value: float, max_value: float):
+        self.min = min_value
+        self.max = max_value
+
+    def __call__(self, obj_value:float) -> float:
+        return (obj_value - self.min) / (self.max - self.min)
+
