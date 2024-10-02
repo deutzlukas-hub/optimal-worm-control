@@ -172,7 +172,7 @@ class WaveformOptimizer():
         else:
             self.objective_function = objective_function
 
-    def optimize_waveform_parameter_spsa(self,
+    def  optimize_waveform_parameter_spsa(self,
         waveform: callable,
         p0: List[float],
         epsilon: float,
