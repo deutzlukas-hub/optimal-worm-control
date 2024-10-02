@@ -1,19 +1,11 @@
 # From built-in
-from pathlib import Path
 from typing import List
 from unittest import TestCase
-import h5py
 import matplotlib.pyplot as plt
 # From third-party
 import numpy as np
 # From my projects
-from parameter_scan import ParameterGrid
 from scipy.interpolate import RectBivariateSpline
-from worm_experiments.sweeper import Sweeper
-from worm_experiments.planar_undulation.planar_undulation_post_processor import PostProcessor
-from worm_experiments.util import parameters_from_args, flatten_parameters
-from worm_experiments.planar_undulation.planar_undulation_parameter import planar_undulation_parser
-from worm_experiments.planar_undulation.sinusoidal_traveling_wave import SinusoidalTravelingWave
 from worm_experiments.util import load_sweep
 from worm_rod_engine.visualize.plot import plot_scalar_field
 
@@ -27,6 +19,7 @@ def waveform(s_arr: np.ndarray, p_arr: List[float]):
     q0 = 2.0 * np.pi / lam0
     A0 = c0 * q0
     return A0 * np.sin(q0 * s_arr)
+
 
 class TestWaveFormOptimize(TestCase):
 

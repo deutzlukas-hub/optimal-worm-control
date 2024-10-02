@@ -1,5 +1,5 @@
 # From built-in
-from argparse import ArgumentParser
+from argparse import ArgumentParser, BooleanOptionalAction
 from typing import List
 import matplotlib.pyplot as plt
 # From third-party
@@ -24,6 +24,8 @@ def plot_optimize_sinusoidal_waveform_spsa():
     parser.add_argument('--K', type=int, default=16)
     parser.add_argument('--epsilon', type=float, default=0.1)
     parser.add_argument('--max_iter', type=int, default=50)
+    parser.add_argument('--quiet', type=BooleanOptionalAction, default=False)
+
     cmd_args = parser.parse_args()
 
     mu = 1e-3
@@ -37,7 +39,7 @@ def plot_optimize_sinusoidal_waveform_spsa():
         '--normalize',
     ]
 
-    WFO = WaveformOptimizer(args)
+    WFO = WaveformOptimizer(args, quiet=cmd_args.quiet)
     WFO.set_objective('speed')
     WFO.set_normalizer(linear_norm(0.0, 0.2))
     p0 = [1.0, 1.0]
