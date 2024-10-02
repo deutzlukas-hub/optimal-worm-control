@@ -3,7 +3,7 @@ from multiprocessing import Pool
 from typing import List, Optional, Callable
 from os import cpu_count
 import logging
-from concurrent.futures import ThreadPoolExecutor, as_completed
+#from concurrent.futures import ThreadPoolExecutor, as_completed
 # From third-party
 import numpy as np
 # From worm-rod engine
